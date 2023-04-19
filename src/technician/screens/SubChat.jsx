@@ -7,6 +7,8 @@ import { SOCKET_API, OPENAI_API_KEY } from '../../../services/api_config';
 // import React, { useState, useEffect, } from 'react';
 import AppContext from '../../../AppContext';
 import Moment from 'moment';
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 
 export const SubChat = ({ navigation, route }) => {
     const { loggedInUser, setLoggedInUser } = useContext(AppContext);
@@ -61,8 +63,8 @@ export const SubChat = ({ navigation, route }) => {
         setemp(emp_name)
         setjobn(jobi)
         setMessages(json)
-        setLastMessage(json[json.length-1].message);
-        getSuggestedReplies(json[json.length-1].message);
+        setLastMessage(json[json.length-1]&& json[json.length-1].message);
+        getSuggestedReplies(json[json.length-1]&&json[json.length-1].message);
         }
         see()
 
@@ -91,7 +93,7 @@ export const SubChat = ({ navigation, route }) => {
             console.log(messages);
             
             //recieve bubble fix
-            getSuggestedReplies(messages[messages.length-1].message);
+            getSuggestedReplies(messages[messages.length-1]&&messages[messages.length-1].message);
 
             //populate (auto in react)
             // update();
@@ -151,14 +153,14 @@ export const SubChat = ({ navigation, route }) => {
 
             item.docModel==="technician" ?            ( <View style={styles.message2}>
             {/* <Text style={styles.sender} >{item.sender_id}</Text> */}
-            <Text style={styles.sender}>{Moment(item.date).format('MMMM Do, YYYY,HH:mm A')}</Text>
+            <Text style={styles.sender2}>{Moment(item.date).format('MMMM Do, YYYY,HH:mm A')}</Text>
            {/* <Text style={styles.sender} >{tech_name.name}</Text>  */}
-            <Text>{item.message}</Text>
+            <Text style={styles.text2} >{item.message}</Text>
         </View>) :          (   <View style={styles.message1}>
         {/* <Text style={styles.sender} >{item.sender_id}</Text> */}
-        <Text style={styles.sender}>{Moment(item.date).format('MMMM Do, YYYY,HH:mm A')}</Text>
+        <Text style={styles.sender1}>{Moment(item.date).format('MMMM Do, YYYY,HH:mm A')}</Text>
        {/* <Text style={styles.sender} >{emp_name.name}</Text>  */}
-        <Text>{item.message}</Text>
+        <Text style={styles.text1} >{item.message}</Text>
     </View>)  
 
 
@@ -182,7 +184,7 @@ export const SubChat = ({ navigation, route }) => {
             />
             <View style={styles.headerText}>
               <Text style={styles.roomId}>{jobn.title}</Text>
-              <Text style={styles.employer}>Employer: {emp_name.name}</Text>
+              <Text style={styles.employer}>Client: {emp_name.name}</Text>
             </View>
           </View>
 
@@ -194,19 +196,27 @@ export const SubChat = ({ navigation, route }) => {
                 />
 
 
-                <View style={styles.inputContainer}>
-                    <TextInput
-                        style={styles.input}
-                        value={tomessage}
-                        onChangeText={(text) => set_tomessage(text)}
-                        placeholder="Type a message..."
-                        multiline={true}
-                    />
-                    {/* <Button title="Send" onPress={handleSend} /> */}
-                    <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
-              <Text style={styles.sendButtonText}>Send</Text>
-            </TouchableOpacity>
-                </View>
+<View style={styles.inputContainer}>
+    <View style={styles.inputIconContainer}>
+        <TouchableOpacity style={styles.inputIcon}>
+            <Icon name="camera" size={20} color="#666" />
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.inputIcon}>
+            <Icon name="photo" size={20} color="#666" />
+        </TouchableOpacity>
+    </View>
+    <TextInput
+        style={styles.input}
+        value={tomessage}
+        onChangeText={(text) => set_tomessage(text)}
+        placeholder="Type a message..."
+        multiline={true}
+    />
+    <TouchableOpacity style={styles.sendButton} onPress={handleSend}>
+        <Text style={styles.sendButtonText}>Send</Text>
+    </TouchableOpacity>
+</View>
+
                 {suggestedReplies.length > 0 && (
                     <View style={styles.suggestionList}>
 
@@ -250,6 +260,18 @@ const styles = StyleSheet.create({
       backgroundColor: "#FFFFFF",
       padding: 10,
       borderRadius: 10,
+
+
+      flexDirection: 'row',
+      paddingBottom:15,
+      paddingTop:15,
+      paddingLeft:5,
+      paddingRight:5,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ccc',
+      backgroundColor:'#F9F8F5',
+
+      
     },
     headerText: {
       flex: 1,
@@ -261,6 +283,8 @@ const styles = StyleSheet.create({
       height: 60,
       borderRadius: 30,
       marginRight: 10,
+      borderColor: '#0D937D',
+      borderWidth: '3'
     },
     roomId: {
       fontSize: 18,
@@ -281,27 +305,50 @@ const styles = StyleSheet.create({
         padding: 10,
         maxWidth: "70%",
         alignSelf: "flex-start",
-        borderWidth: 1,
-        borderColor: "#ccc",
         borderRadius: 10,
         marginBottom: 5,
         borderTopLeftRadius: 2,
-        backgroundColor: "#EBEBEB",
-    },
-    message2: {
-          backgroundColor: "#DCF8C5",
+        backgroundColor: "#F0F0F0", // Update the receiver bubble background color to a light gray
+        // Add box shadow properties for receiver bubble
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
+      },
+      message2: {
+        // backgroundColor: "#0B84FE", // Update the sender bubble background color to iOS blue
+        backgroundColor: "#48D05F",
         padding: 10,
         maxWidth: "70%",
         alignSelf: "flex-end",
-        borderWidth: 1,
-        borderColor: "#ccc",
         borderRadius: 10,
         marginBottom: 5,
         borderTopRightRadius: 2,
+        // Add box shadow properties for sender bubble
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 1,
+        },
+        shadowOpacity: 0.1,
+        shadowRadius: 2,
       },
-      sender: {
+      text2: {
+        color: "#FFFFFF", // Set the text color to white
+
+      },
+      
+      sender1: {
         fontSize: 12,
         color: "grey",
+        marginTop: 5,
+      },
+      sender2: {
+        fontSize: 12,
+        color: "#E5E4E2",
         marginTop: 5,
       },
     inputContainer: {
@@ -359,5 +406,14 @@ const styles = StyleSheet.create({
         color: "#FFFFFF",
         fontWeight: "bold",
       },
+      inputIconContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 60,
+    },
+    inputIcon: {
+        marginHorizontal: 5,
+    },
 });
 

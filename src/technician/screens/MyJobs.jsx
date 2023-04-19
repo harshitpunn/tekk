@@ -21,32 +21,22 @@ export const MyJob = ({ navigation }) => {
   // const urlOffer = `http://localhost:5001/api/v1/technician/${tech_id}/offers`
 
   useEffect(() => {
-    // const fetchData = async() =>{
-    //   try {
-    //     const response = await fetch(url);
-    //     const json = await response.json();
-    //     setData(json);
-      
-    //   } catch (error) {
-    //     console.error(error);
-    //   }
-    // }
-    // fetchData()
+    
+    const unsubscribe = navigation.addListener('focus', () => { 
+      const fetchOfferData = async() =>{
+        const json = await getOffersByTechId(loggedInUser.id)
+        setOffers(json);
+      }
+      fetchOfferData()
+    })
 
     const fetchOfferData = async() =>{
-      // try {
-      //   const response = await fetch(urlOffer);
-      //   const json = await response.json();
-      //   setOffers(json);
-      
-      // } catch (error) {
-      //   console.error(error);
-      // }
       const json = await getOffersByTechId(loggedInUser.id)
       setOffers(json);
     }
     fetchOfferData()
-  }, []);
+    return unsubscribe;
+  }, [navigation]);
 
   if(Offers.length > 0){
     // Offers.map((jobID) =>{
@@ -65,7 +55,9 @@ export const MyJob = ({ navigation }) => {
 
   const filteredData = Offers.filter((post) => post.offerStatus === jobStatus  ).sort((a, b) => new Date(b.prefer_start_date) - new Date(a.prefer_start_date));
 
-  console.log('ddddd',filteredData.length)
+  const searchFilteredData = filteredData
+
+  console.log('ddddd',searchFilteredData.length)
   
   return (
     <Box bg="#F9F9F9" height="100%">
@@ -99,19 +91,19 @@ export const MyJob = ({ navigation }) => {
         </Text></Button>
       </View>
       <ScrollView contentContainerStyle={styles.container}>
-       {filteredData.length > 0 ?  
+       {searchFilteredData.length > 0 ?  
         <>
-        {filteredData.map((post) => {
+        {searchFilteredData.map((post) => {
           Moment.locale('en');
           return (
             post.jobID === null ? (
-              <TouchableOpacity key={post._id} onPress={() => navigation.navigate('JobFull', {id: post._id,status:post.offerStatus})}>
+              <TouchableOpacity key={post._id} onPress={() => navigation.navigate('My Job Details', {id: post._id,status:post.offerStatus})}>
                 <View style={styles.postContainer}>
                   <Text>job id null. check backend</Text>
                 </View>
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity key={post._id} onPress={() => navigation.navigate('JobFull', {id: post._id,status:post.offerStatus})}>
+              <TouchableOpacity key={post._id} onPress={() => navigation.navigate('My Job Details', {id: post._id,status:post.offerStatus})}>
               <View style={styles.postContainer}>
   <View style={styles.postTitleContainer}>
     <Image style={styles.postImage} source={{ uri: post.jobID.images[0] }} />

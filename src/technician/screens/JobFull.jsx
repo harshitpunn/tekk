@@ -5,7 +5,9 @@ import { StyleSheet, TouchableOpacity,TextInput,Image } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import ClockInOut from './ClockInOut';
-import { getEmploymentByOfferId, getOffersById } from '../../../services/api';
+import { getEmploymentByOfferId, getOffersById,startJob } from '../../../services/api';
+import Toast from 'react-native-toast-message';
+
 
 const JobFull = () => {
     const [data, setData] = useState([]);
@@ -41,8 +43,55 @@ const JobFull = () => {
 console.log('see',status)
 
 console.log('submit',data)
-        
+
+// const handleStart = async () => {
+//   const offer = {
+//     job_id: data[0] && data[0].job._id,
+//     offer_id: data[0] && data[0].offer_id._id, 
+//   };
+
+//   try {
+//     const response = await startJob(offer);
+//     console.log(response); 
+//   } catch (error) {
+//     console.error(error);
+//   }
+// }
+// const handleStart = async () => {
+//   console.log('handleStart called');
+//   const offer = {
+//     job_id: data[0] && data[0].job._id,
+//     offer_id: data[0] && data[0].offer_id._id, 
+//   };
+
+//   try {
+//     const response = await startJob(offer);
+//     console.log('startJob response:', response); 
+//   } catch (error) {
+//     console.error('startJob error:', error);
+//   }
+// }
 //   console.log("data",data[0].employment_status)
+
+const handleStart = async () => {
+  console.log('handleStart called');
+  const offer = {
+    job_id: data[0] && data[0].job._id,
+    offer_id: data[0] && data[0].offer_id._id, 
+  };
+    const response = await startJob(offer);
+    console.log('startJob response:', response);
+    Toast.show({
+      type: 'success',
+      text1: 'Job Started successfully!',
+      visibilityTime: 1000,
+      position:'bottom',
+      autoHide: true,
+      onHide: () => {
+        navigation.navigate('My Jobs');
+      },
+    });
+}; 
 
   return (
     <Box flex={1} bg="white" p={2} >
@@ -102,7 +151,7 @@ console.log('submit',data)
                     <Text style={styles.label}>Total income:</Text>
                     <Text style={styles.postText}> ${data[0] && data[0].total_income.toFixed(2)}</Text>
                     </View>
-
+              
                 </View>
               
                
@@ -111,7 +160,10 @@ console.log('submit',data)
               </Box>
 
               {status === 'upcoming' ? (
-                <ClockInOut job_id={data[0] && data[0].job._id} offer_id={data[0] && data[0].offer_id._id} emp_id={data[0] && data[0]._id} />
+                  <TouchableOpacity style={styles.botton} onPress={handleStart}>
+                  <Text style={styles.btntxt}>Start Job</Text>
+                </TouchableOpacity>
+                // <ClockInOut job_id={data[0] && data[0].job._id} offer_id={data[0] && data[0].offer_id._id} emp_id={data[0] && data[0]._id} statusend={"upcoming"} />
               ) : null}
 
               {status === 'pending' ? (
@@ -121,7 +173,7 @@ console.log('submit',data)
               ) : null}
 
               {status === 'ongoing' ? (
-                <ClockInOut job_id={data[0] && data[0].job._id} offer_id={data[0] && data[0].offer_id._id} emp_id={data[0] && data[0]._id} />
+                <ClockInOut job_id={data[0] && data[0].job._id} offer_id={data[0] && data[0].offer_id._id} emp_id={data[0] && data[0]._id } statusend = "ongoing"/>
               ) : null}
             </VStack>
           </>
@@ -131,6 +183,7 @@ console.log('submit',data)
           </Center>
         )}
       </ScrollView>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
     </Box>
   )
 }

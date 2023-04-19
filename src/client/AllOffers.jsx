@@ -5,7 +5,7 @@ import { StyleSheet, TouchableOpacity,TextInput,Image } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
 import { useNavigation, useRoute } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
-import { getOffersByJobId,getJobById,acceptOffer, createRoom } from '../../services/api';
+import { getOffersByJobId,getJobById,acceptOffer, createRoom, pushToTechnicianById } from '../../services/api';
 
 import AppContext from '../../AppContext';
 
@@ -80,6 +80,14 @@ const AllOffers = (props) => {
 
             const data1 = await acceptOffer(id,offer);
 
+            //push notification to  some technicianssssssssssss
+            const obj1 = {
+              "heading": `Your offer accepted by client`,
+              "text": `Client ${loggedInUser.name} accepted your offer on job`
+            }
+            const json3 = await pushToTechnicianById(teid,obj1)
+
+
             navigation.goBack();
     }
     const goToChatRoom = async (jid,tid,eid) =>{
@@ -95,7 +103,7 @@ const AllOffers = (props) => {
 
           console.log("asskjdkjldaskdsajlkdasjkldasjklsadjkldas created room");
 
-          navigation.navigate('SubChatClient',   { propValue: json._id, p2: tid , roomid: json._id , job_id: jid });
+          navigation.navigate('Chat',   { propValue: json._id, p2: tid , roomid: json._id , job_id: jid });
 
   }
   return (
@@ -143,10 +151,10 @@ const AllOffers = (props) => {
                   <Text style={styles.postSubtitleText}>Estimated Price:{post.offerPrice}</Text>
                   <Text style={styles.postSubtitleText}>Start date:{Moment(post.prefer_start_date).format('D MMMM YYYY')}</Text>
                   <TouchableOpacity style={{marginTop:10}}
-                title="Chat"
+                title='Messages'
                 onPress={() => {goToChatRoom(id,post.technician_who_offered._id, loggedInUser.id)}}
                 //   jobId={jobId}
-                ><Text style={{textDecorationLine:'underline',textAlign:'left',color:'#0D937D'}}>Start Negotiation</Text></TouchableOpacity>
+                ><Text style={{textDecorationLine:'underline',textAlign:'left',color:'#0D937D'}}>Start Messaging</Text></TouchableOpacity>
                 </View>
                 </View>
             <View style={{display:'flex',flexDirection:'row', justifyContent:'center'}}>

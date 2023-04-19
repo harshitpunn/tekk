@@ -5,7 +5,7 @@ import { Input, NativeBaseProvider } from 'native-base';
 // import { AppStack } from '../technician/stacks/AppStack';
 import { Chat } from '../technician/screens/Chat';
 // import { AppStackClient } from '../client/stacks/AppStackClient';
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+// import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { View, TextInput, Button,Image,TouchableOpacity } from 'react-native';
 import React, { useState, useContext } from 'react';
 import AppContext from '../../AppContext';
@@ -19,9 +19,9 @@ import { CommonActions } from '@react-navigation/native';
 import {login} from '../../services/api'
 
 import Toast from 'react-native-toast-message';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-
-const Tab = createMaterialTopTabNavigator();
+// const Tab = createMaterialTopTabNavigator();
 
 // import jobFeed from './technician/JobPosts';
 const Stack = createNativeStackNavigator();
@@ -55,6 +55,21 @@ export const Login = () => {
     }
     const json1 = await login(null, body1);
     console.log(json1);
+    console.log(json1.token)
+    
+    //store in async storage
+    const storeData = async (key, value) => {
+      try {
+        await AsyncStorage.setItem(key, value);
+        console.log('Data stored successfully!');
+      } catch (error) {
+        console.error('Error storing data:', error);
+      }
+    };
+
+    storeData("jwtoken",json1.token)
+
+
     if ( json1.error === false){
       console.log("4444444444444444");
       console.log(json1.data.name);
@@ -62,9 +77,16 @@ export const Login = () => {
         setLoggedInUser({
           id: json1.data._id,
           name: json1.data.name,
+          email: json1.data.email,
+          address: json1.data.address,
+          skills: json1.data.skills,
+          picture:json1.data.picture,
           isTechnician: json1.data.isTechnician
         })
+
+        console.log(json1)
       // Reset the navigation stack and navigate to the technician portal
+      
       navigation.dispatch(
         CommonActions.reset({
           index: 0,
@@ -73,14 +95,17 @@ export const Login = () => {
            
           }, }],
         })
-      );
+      ); 
       }else{
         setLoggedInUser({
           id: json1.data._id,
           name: json1.data.name,
+          email: json1.data.email,
+          address: json1.data.address,
+          picture:json1.data.picture,
           isTechnician: json1.data.isTechnician
         })
-
+        console.log(json1)
         navigation.dispatch(
           CommonActions.reset({
             index: 0,

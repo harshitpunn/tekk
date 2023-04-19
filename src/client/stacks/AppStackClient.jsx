@@ -1,4 +1,4 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+// import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -40,14 +40,14 @@ export const AppStackClient = () => {
         options={{ headerShown: false }}
       />
      <Stack.Screen name='Search' component={SearchInput}></Stack.Screen>
-     <Stack.Screen name='JobContainer' component={JobContainer}></Stack.Screen>
-     <Stack.Screen name='AllOffers' component={AllOffers}></Stack.Screen>
+     <Stack.Screen name='Job Details' component={JobContainer}></Stack.Screen>
+     <Stack.Screen name='Offers Detail' component={AllOffers}></Stack.Screen>
      <Stack.Screen name='Create Post' component={CreatePost}></Stack.Screen>
      <Stack.Screen name='MyPosts' component={MyPosts}></Stack.Screen>
-     <Stack.Screen name='PostDetails' component={PostDetails}></Stack.Screen>
+     <Stack.Screen name='Post Details' component={PostDetails}></Stack.Screen>
      <Stack.Screen name='Profile' component={TechnicianProfile}></Stack.Screen>
      <Stack.Screen name='Notifications' component={NotificationPage}></Stack.Screen>
-     <Stack.Screen name='SubChatClient' component={SubChatClient}  ></Stack.Screen>
+     <Stack.Screen name='Chat' component={SubChatClient}  ></Stack.Screen>
 
 
      {/* <Stack.Screen name='Logout' component={Login}></Stack.Screen> */}
@@ -72,7 +72,7 @@ export const TabStack = () => {
             />
           );
         }
-        else if (route.name === 'Chats') {
+        else if (route.name === 'Messages') {
           return (
          
             <Ionicons
@@ -114,7 +114,9 @@ export const TabStack = () => {
           headerRight: () => <NotificationBell />, 
         }} />
       
-      <Tab.Screen name="Chats" component={AllChats} />
+      <Tab.Screen name='Messages' component={AllChats} options={{
+          headerRight: () => <NotificationBell />, 
+        }} />
       
       <Tab.Screen name="Account" component={Account} />
     

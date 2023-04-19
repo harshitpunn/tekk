@@ -47,7 +47,7 @@ const Offers = () => {
         <AntDesign name="search1" size={24} color="black" style={styles.searchIcon} />
         <TextInput
           style={styles.searchInput}
-          placeholder="Search Jobs"
+          placeholder="Search Offers"
           onChangeText={(text) => setSearchTerm(text)}
           value={searchTerm}
         />
@@ -59,7 +59,7 @@ const Offers = () => {
         {filteredData.map((post) => {
           Moment.locale('en');
           return (
-            <TouchableOpacity style={styles.postContainerP} key={post._id} onPress={() => navigation.navigate('AllOffers', {id: post._id})}>
+            <TouchableOpacity style={styles.postContainerP} key={post._id} onPress={() => navigation.navigate('Offers Detail', {id: post._id})}>
               <View style={styles.postContainer}>
               <Image source={{ uri:  post.images[0] }} style={{  width: 150,height: 100,marginRight: 10,borderRadius: 10 }} />
                 <View>

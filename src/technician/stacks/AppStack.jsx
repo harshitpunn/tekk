@@ -1,4 +1,4 @@
-import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
+// import { createMaterialTopTabNavigator } from '@react-navigation/material-top-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Account } from '../screens/Account';
 import { Activities } from '../screens/Activities';
@@ -40,14 +40,14 @@ export const AppStack = () => {
        
       />
      <Stack.Screen name='Search' component={SearchInput}></Stack.Screen>
-     <Stack.Screen name='JobContainer' component={JobContainer}></Stack.Screen>
+     <Stack.Screen name='Job Details' component={JobContainer}></Stack.Screen>
      <Stack.Screen name='SendOffer' component={SendOfferButton}></Stack.Screen>
      <Stack.Screen name='ViewOffer' component={ViewOffer}></Stack.Screen>
      <Stack.Screen name='Profile' component={Profile}></Stack.Screen>
-     <Stack.Screen name='JobFull' component={JobFull}></Stack.Screen>
+     <Stack.Screen name='My Job Details' component={JobFull}></Stack.Screen>
      <Stack.Screen name='Notifications' component={NotificationPage}></Stack.Screen>
      {/* <Stack.Screen name='imageUpload' component={ImagePickerExample}></Stack.Screen> */}
-     <Stack.Screen name='SubChat' component={SubChat}  ></Stack.Screen>
+     <Stack.Screen name='Chat' component={SubChat}  ></Stack.Screen>
 
      {/* <Stack.Screen name='imageUpload' component={ImagePickerExample}></Stack.Screen> */}
      
@@ -89,7 +89,7 @@ export const TabStack = () => {
             />
           );
         }
-        else if (route.name === 'Chat') {
+        else if (route.name === 'Messages') {
           return (
             <Ionicons
               name={'chatbox'}
@@ -125,7 +125,9 @@ export const TabStack = () => {
           headerRight: () => <NotificationBell />, 
         }} />
 
-      <Tab.Screen name="Chat" component={Chat} />
+      <Tab.Screen name='Messages' component={Chat} options={{
+          headerRight: () => <NotificationBell />, 
+        }} />
       
       <Tab.Screen name="Account" component={Account} />
 

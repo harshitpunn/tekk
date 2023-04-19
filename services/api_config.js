@@ -1,5 +1,6 @@
 //SOCKET
-// export const SOCKET_API = 'http://localhost:5001'
+//  export const SOCKET_API = 'http://localhost:5001'
+//   export const SOCKET_API = 'http://192.168.2.42:5001'
  export const SOCKET_API = 'http://tekk-env.eba-udyk2w25.us-west-2.elasticbeanstalk.com'
 export const API_BASE_URL = `${SOCKET_API}/api/v1`
 
@@ -24,6 +25,8 @@ export const MESSAGES  = (id) => `${API_BASE_URL}/rooms/${id}/messages`
 export const NOTIFICATIONS_BY_TECHID  = (id) => `${API_BASE_URL}/technicians/${id}/notifications`
 export const NOTIFICATIONS_BY_EMPID  = (id) => `${API_BASE_URL}/employers/${id}/notifications`
 export const ALL_OFFERS = `${API_BASE_URL}/offers`
+
+export const STARTIT  = () =>  `${API_BASE_URL}/jobs/startJob`;
 
 export const CLOCKIN  = (id) =>  `${API_BASE_URL}/jobs/${id}/clockin`;
 
